@@ -1,0 +1,34 @@
+<div class="container">
+  <h2 class="text-capitalize text-sm-center text-bg-primary">
+    User List
+  </h2>
+  <button routerLink="/addUser" class="btn btn-primary mb-2" title="Add New User">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
+  <table class="table table-striped border table-hover">
+    <thead>
+    <tr>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Date Of Birth</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of userList">
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.dob}}</td>
+      <td>
+
+        <button (click)="editUser(user)" class="btn btn-secondary" title="Edit User">
+          <fa-icon [icon]="faPen"></fa-icon>
+        </button>
+        <button (click)="deleteUserById(user.id)" class="btn btn-danger" title="Delete User">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

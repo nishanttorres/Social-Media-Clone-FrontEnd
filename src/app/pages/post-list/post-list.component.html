@@ -1,0 +1,60 @@
+<div class="container mt-5">
+
+  <div class="d-flex justify-content-between mb-4">
+  <button class="btn btn-primary rounded-circle" (click)="toggleForm()" title="Add New Post">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
+    <h1 class="text-sm-center">SMC</h1>
+  <button class="btn btn-danger" title="Sign Out" routerLink="../../../signIn">
+    <fa-icon [icon]="signout"></fa-icon>
+  </button>
+  </div>
+
+  <div class="mb-3" *ngIf="!formHidden">
+    <form [formGroup]="postForm" (ngSubmit)="addNewPost()">
+      <div class="form-group">
+        <label for="post"></label>
+        <input class="form-control" type="text" formControlName="post" id="post" placeholder="What's happening..."/>
+      </div>
+      <button class="btn btn-primary mt-2" type="submit">POST</button>
+    </form>
+  </div>
+
+  <div class="border mb-5" *ngFor="let post of posts" >
+    <div class="border d-flex justify-content-between">
+      <h6 class="text-sm-start mt-2">
+        {{user?.firstName}} {{user?.lastName}}
+      </h6>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-secondary" (click)="editPost(post)" title="Edit"><fa-icon [icon]="faPen"></fa-icon></button>
+        <button type="button" class="btn btn-danger" (click)="deletePost(post.id)" title="Delete"><fa-icon [icon]="faTrash"></fa-icon></button>
+      </div>
+    </div>
+
+    <div class="container border">
+      <p class="text-sm-end small">Date Posted: {{post.date | date:'yyyy-MM-dd'}}</p>
+      <h3 class="text-sm-center">{{post.post}}</h3>
+      <p class="text-sm-end">Number of Likes: {{post.numberOfLikes}}</p>
+    </div>
+
+    <div class="container border" *ngFor="let comment of post.comments">
+      <p class="small text-sm-end">
+        Date Posted: {{comment.date | date:'yyyy-MM-dd'}}
+      </p>
+      <div class="d-flex justify-content-between">
+        <p class="text-large">{{comment.comment}}</p>
+        <button type="button" class="btn btn-danger mb-3" (click)="deleteComment(comment.id)" title="Delete"><fa-icon [icon]="faTrash"></fa-icon></button>
+      </div>
+    </div>
+
+    <div class="container border">
+      <form [formGroup]="commentForm" (ngSubmit)="addNewComment(post.id)">
+        <div class="form-group mb-2">
+          <label for="comment"></label>
+          <input placeholder="Post your reply" id="comment" formControlName="comment" class="form-control" type="text"/>
+        </div>
+        <button class="btn btn-primary mb-2" type="submit">Comment</button>
+      </form>
+    </div>
+  </div>
+</div>

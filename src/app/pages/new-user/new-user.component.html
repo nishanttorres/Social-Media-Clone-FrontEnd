@@ -1,0 +1,38 @@
+<div class="container">
+  <h2 class="text-capitalize text-sm-center text-bg-primary">
+    {{title}}
+  </h2>
+  <form [formGroup]="userForm" (ngSubmit)="addNewUser()">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input class="form-control" type="text" formControlName="firstName" id="firstName"/>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input class="form-control" type="text" formControlName="lastName" id="lastName"/>
+    </div>
+    <div class="form-group">
+      <label for="dob">Date Of Birth</label>
+      <input class="form-control" type="date" formControlName="dob" id="dob"/>
+    </div>
+    <div class="form-group">
+      <label for="email"><span style="color: red">*</span>Email</label>
+      <input id="email" type="email" class="form-control" formControlName="email"/>
+      <div style="color: red" *ngIf="userForm.get('email')?.errors?.['required'] && userForm.get('email')?.touched">
+        Please provide email.
+      </div>
+      <div style="color: red" *ngIf="userForm.get('email')?.errors?.['email'] && userForm.get('email')?.touched">
+        Invalid email.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password"><span style="color: red">*</span>Password</label>
+      <input id="password" class="form-control" formControlName="password" type="password"/>
+      <div style="color: red" *ngIf="userForm.get('password')?.errors?.['required'] && userForm.get('password')?.touched">
+        Please provide password.
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-2" type="submit">Save</button>
+  </form>
+</div>
