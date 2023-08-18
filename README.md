@@ -1,4 +1,5 @@
-# SMC
+# Social-Media-Clone-FrontEnd
+Frontend code for Full Stack Social Media Clone App like X using Angular.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.8.
 
