@@ -10,9 +10,10 @@ export class User {
   email:string;
   password:string;
   comments: Comment[];
+  likedPostsId : number[];
 
 
-  constructor(id:number, firstName:string, lastName:string, dob:Date, posts:Post[], email:string, password:string, comments: Comment[]) {
+  constructor(id:number, firstName:string, lastName:string, dob:Date, posts:Post[], email:string, password:string, comments: Comment[], likedPostsId : number[]) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -21,6 +22,6 @@ export class User {
     this.email = email;
     this.password = password;
     this.comments = comments;
+    this.likedPostsId = likedPostsId;
   }
-
 }

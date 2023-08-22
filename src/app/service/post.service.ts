@@ -27,4 +27,8 @@ export class PostService {
     // @ts-ignore
     return this.http.patch<string>(this.url,post, {responseType:"text"});
   }
+
+  getPostById(postId:number):Observable<Post>{
+    return this.http.get<Post>(`${this.url}/${postId}`);
+  }
 }

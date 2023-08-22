@@ -31,4 +31,6 @@ export class SignInComponent implements OnInit{
       }
     })
   }
+
+    protected readonly navigator = navigator;
 }

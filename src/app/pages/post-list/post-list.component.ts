@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostService} from "../../service/post.service";
 import {Post} from "../../entity/post/post";
 import {User} from "../../entity/user/user";
 import {UserService} from "../../service/user.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {CommentService} from "../../service/comment.service";
-import {faTrash,faPen, faPlus, faArrowRight} from "@fortawesome/free-solid-svg-icons";
+import {faTrash,faPen, faPlus, faArrowRight, faThumbsUp} from "@fortawesome/free-solid-svg-icons";
 import {ActivatedRoute} from "@angular/router";
 
 
@@ -19,6 +19,7 @@ export class PostListComponent implements OnInit{
   faPen = faPen;
   faPlus = faPlus;
   signout = faArrowRight;
+  like = faThumbsUp;
   posts:Post[] = [];
   user?:User;
   post?:Post;
@@ -29,6 +30,7 @@ export class PostListComponent implements OnInit{
   commentForm:FormGroup;
   formHidden:boolean = true;
   userId: number = 102;
+  postLikesCount: Map<number,number> = new Map<number, number>();
   constructor(private postService:PostService,
               private userService:UserService,
               private commentService:CommentService,
@@ -46,7 +48,7 @@ export class PostListComponent implements OnInit{
       post:[''],
       date:Date.now(),
       comments:[],
-      user:['']
+      user:this.user
     });
     this.commentForm = this.formBuilder.group({
       user:this.user,
@@ -60,8 +62,10 @@ export class PostListComponent implements OnInit{
     this.userService.getUserById(this.userId).subscribe((user:User)=>this.user = user);
     this.postService.getAllPostsByUserId(this.userId).subscribe((posts:Post[])=>{
       this.posts = posts.reverse();
-      console.log(this.posts);
-    })
+      this.posts.forEach(post =>{
+        this.postLikesCount.set(post.id, post.numberOfLikes);
+      })
+      })
   }
 
   addNewPost():void{
@@ -73,6 +77,7 @@ export class PostListComponent implements OnInit{
         this.getAllPostByUserId();
     })}
     else{
+      console.log(this.postForm.value);
       this.postService.addNewPost(this.userId, this.postForm.value).subscribe((response:string)=>{
         this.postForm.reset();
         this.toggleForm();
@@ -107,5 +112,49 @@ export class PostListComponent implements OnInit{
     })
   }
 
-  protected readonly console = console;
+  liked(postId:number) {
+    let numLikes = this.findPostLikes(postId);
+    let isLiked = this.isLikedByUser(postId);
+    if(isLiked){
+      if(numLikes == 0){
+        return;
+      }
+      this.postLikesCount.set(postId, --numLikes);
+      // Remove this postId from likedPostsId from user
+      if(this.user != undefined){
+        this.user?.likedPostsId.splice(this.user.likedPostsId.indexOf(postId),1);
+        this.userService.editUser(this.user).subscribe();
+      }
+    }else{
+      this.postLikesCount.set(postId, ++numLikes);
+      // Add this postId to likedPostsId of user
+      if(this.user != undefined){
+        this.user?.likedPostsId.push(postId);
+        this.userService.editUser(this.user).subscribe();
+      }
+    }
+    // Update post numberOfLikes
+    this.postService.getPostById(postId).subscribe((p:Post)=>{
+      this.post = p;
+      this.post.numberOfLikes = numLikes;
+      this.postService.editPost(this.post).subscribe();
+    })
+  }
+
+  findPostLikes(postId:number):number{
+    const numLikes = this.postLikesCount.get(postId);
+    if(numLikes != undefined){
+      return numLikes
+    } else{
+      return -1;
+    }
+  }
+
+  isLikedByUser(postId:number):boolean{
+    if(this.user && this.user.likedPostsId){
+      return this.user.likedPostsId.includes(postId);
+    }else{
+      return false;
+    }
+  }
 }

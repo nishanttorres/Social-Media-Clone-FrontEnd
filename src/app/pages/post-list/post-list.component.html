@@ -23,7 +23,7 @@
   <div class="border mb-5" *ngFor="let post of posts" >
     <div class="border d-flex justify-content-between">
       <h6 class="text-sm-start mt-2">
-        {{user?.firstName}} {{user?.lastName}}
+        {{post.user.firstName}} {{post.user.lastName}}
       </h6>
       <div class="btn-group" role="group">
         <button type="button" class="btn btn-secondary" (click)="editPost(post)" title="Edit"><fa-icon [icon]="faPen"></fa-icon></button>
@@ -34,13 +34,17 @@
     <div class="container border">
       <p class="text-sm-end small">Date Posted: {{post.date | date:'yyyy-MM-dd'}}</p>
       <h3 class="text-sm-center">{{post.post}}</h3>
-      <p class="text-sm-end">Number of Likes: {{post.numberOfLikes}}</p>
+      <div class="d-inline-flex">
+        <button type="button" class="btn btn-primary" [class.highlighted]="!isLikedByUser(post.id)" title="Like" (click)="liked(post.id)"><fa-icon [icon]="like"></fa-icon></button>
+        <p class="text mt-3">{{this.findPostLikes(post.id)}}</p>
+      </div>
     </div>
 
     <div class="container border" *ngFor="let comment of post.comments">
-      <p class="small text-sm-end">
-        Date Posted: {{comment.date | date:'yyyy-MM-dd'}}
-      </p>
+      <div class="small d-flex justify-content-between">
+        <p> <img src="https://robohash.org/{{comment.user.id}}/?set=set2" height="50" width="50">{{comment.user.firstName}} {{comment.user.lastName}}</p>
+        <p class="text-sm-end">Date Posted: {{comment.date | date:'yyyy-MM-dd'}}</p>
+      </div>
       <div class="d-flex justify-content-between">
         <p class="text-large">{{comment.comment}}</p>
         <button type="button" class="btn btn-danger mb-3" (click)="deleteComment(comment.id)" title="Delete"><fa-icon [icon]="faTrash"></fa-icon></button>
