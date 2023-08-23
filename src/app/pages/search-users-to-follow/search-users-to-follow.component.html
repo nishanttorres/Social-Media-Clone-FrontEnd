@@ -1,0 +1,12 @@
+<app-nav-bar></app-nav-bar>
+<div class="fixed-container">
+  <div class="container border bg-success rounded">
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+      <form #searchValue ="ngForm" class="form-control bg-success border-success d-inline-flex" (ngSubmit)="print(searchValue)">
+        <input class="form-control mx-2" type="search" placeholder="Search user to follow" ngModel name="search">
+        <button class="btn btn-light" type="submit">Search</button>
+      </form>
+    </nav>
+  </div>
+</div>
+

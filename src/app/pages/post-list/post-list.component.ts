@@ -5,7 +5,7 @@ import {User} from "../../entity/user/user";
 import {UserService} from "../../service/user.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {CommentService} from "../../service/comment.service";
-import {faTrash,faPen, faPlus, faArrowRight, faThumbsUp} from "@fortawesome/free-solid-svg-icons";
+import {faTrash,faPen, faPlus, faThumbsUp} from "@fortawesome/free-solid-svg-icons";
 import {ActivatedRoute} from "@angular/router";
 
 
@@ -18,12 +18,10 @@ export class PostListComponent implements OnInit{
   faTrash = faTrash;
   faPen = faPen;
   faPlus = faPlus;
-  signout = faArrowRight;
   like = faThumbsUp;
   posts:Post[] = [];
   user?:User;
   post?:Post;
-  userName?:string;
   // @ts-ignore
   postForm:FormGroup;
   // @ts-ignore
@@ -97,6 +95,7 @@ export class PostListComponent implements OnInit{
   }
   toggleForm() {
     this.formHidden = !this.formHidden;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   addNewComment(postId:number):void{

@@ -1,0 +1,17 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
+  <div class="ml-auto">
+    <button class="btn btn-light" title="Search" (click)="navigateToFindUser()">
+      <fa-icon [icon]="addUser"></fa-icon>
+    </button>
+  </div>
+  <div class="container d-flex align-content-stretch">
+    <a class="navbar-brand">Following</a>
+    <a class="navbar-brand">SMC</a>
+    <a class="navbar-brand">Profile</a>
+  </div>
+  <div class="ml-auto">
+    <button class="btn btn-danger" title="Sign Out" (click)="navigateToSignIn()">
+      <fa-icon [icon]="signout"></fa-icon>
+    </button>
+  </div>
+</nav>

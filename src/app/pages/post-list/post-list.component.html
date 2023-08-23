@@ -1,15 +1,5 @@
-<div class="container mt-5">
-
-  <div class="d-flex justify-content-between mb-4">
-  <button class="btn btn-primary rounded-circle" (click)="toggleForm()" title="Add New Post">
-    <fa-icon [icon]="faPlus"></fa-icon>
-  </button>
-    <h1 class="text-sm-center">SMC</h1>
-  <button class="btn btn-danger" title="Sign Out" routerLink="../../../signIn">
-    <fa-icon [icon]="signout"></fa-icon>
-  </button>
-  </div>
-
+<app-nav-bar></app-nav-bar>
+<div class="container mt-1">
   <div class="mb-3" *ngIf="!formHidden">
     <form [formGroup]="postForm" (ngSubmit)="addNewPost()">
       <div class="form-group">
@@ -20,10 +10,16 @@
     </form>
   </div>
 
+  <div class="float-left mb-2">
+    <button class="btn rounded-circle btn-outline-primary position-fixed start-0 mb-4 ml-4" (click)="toggleForm()" title="Add New Post">
+      <fa-icon [icon]="faPlus"></fa-icon>
+    </button>
+  </div>
+
   <div class="border mb-5" *ngFor="let post of posts" >
     <div class="border d-flex justify-content-between">
       <h6 class="text-sm-start mt-2">
-        {{post.user.firstName}} {{post.user.lastName}}
+        <img src="https://robohash.org/{{post.user.id}}/?set=set2" height="50" width="50">{{post.user.firstName}} {{post.user.lastName}}
       </h6>
       <div class="btn-group" role="group">
         <button type="button" class="btn btn-secondary" (click)="editPost(post)" title="Edit"><fa-icon [icon]="faPen"></fa-icon></button>
@@ -34,9 +30,13 @@
     <div class="container border">
       <p class="text-sm-end small">Date Posted: {{post.date | date:'yyyy-MM-dd'}}</p>
       <h3 class="text-sm-center">{{post.post}}</h3>
-      <div class="d-inline-flex">
-        <button type="button" class="btn btn-primary" [class.highlighted]="!isLikedByUser(post.id)" title="Like" (click)="liked(post.id)"><fa-icon [icon]="like"></fa-icon></button>
-        <p class="text mt-3">{{this.findPostLikes(post.id)}}</p>
+      <div class="d-flex justify-content-end">
+        <div class="d-inline-flex flex-column align-items-center">
+          <button type="button" class="btn btn-primary" [class.highlighted]="!isLikedByUser(post.id)" title="Like" (click)="liked(post.id)">
+            <fa-icon [icon]="like"></fa-icon>
+          </button>
+          <p class="text">{{this.findPostLikes(post.id)}}</p>
+        </div>
       </div>
     </div>
 
@@ -46,7 +46,7 @@
         <p class="text-sm-end">Date Posted: {{comment.date | date:'yyyy-MM-dd'}}</p>
       </div>
       <div class="d-flex justify-content-between">
-        <p class="text-large">{{comment.comment}}</p>
+        <p class="text-large mt-2">{{comment.comment}}</p>
         <button type="button" class="btn btn-danger mb-3" (click)="deleteComment(comment.id)" title="Delete"><fa-icon [icon]="faTrash"></fa-icon></button>
       </div>
     </div>
